@@ -20,6 +20,7 @@ var _ = require('underscore');
 
 var config = require('./config');
 var routes = require('./app/routes');
+var Dog = require('./models/dog');
 
 var app = express();
 
@@ -35,6 +36,42 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Get dog list
+app.get('/api/dog/list', function(req, res) {
+  Dog.find({}, function(err, dogs) {
+    /* Todo: Handle errors, not found */
+    res.send(dogs);
+  });
+});
+
+// Add dog 
+app.post('/api/dog/add', function(req, res) {
+  var data = {
+    name: req.body.dog.name
+  };
+
+  var dog = new Dog(data);
+
+  dog.save(function(err, data) {
+    if (err) {
+      res.json(error);
+    }
+    else {
+      res.json(data);
+    }
+  });
+});
+
+// Get dog route
+app.get('/api/dog/:id', function(req, res) {
+  Dog.findOne({ _id: req.params.id }, function(err, dog) {
+    /* Todo: Handle errors, not found */
+    res.send(dog);
+  });
+});
+
 
 
 app.use(function(req, res) {
