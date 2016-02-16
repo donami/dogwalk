@@ -4,10 +4,12 @@ import { Link } from 'react-router';
 class Navigation extends React.Component {
   render () {
     return (
-      <div>
-        <Link to="/dogs">List</Link>
-        <Link to="/dog/add" onClick={Link.handleClick}>Add dog</Link>
-      </div>
+      <nav className="menu">
+        <ul>
+          <li><Link to="/dogs">List</Link></li>
+          <li><Link to="/dog/add" onClick={Link.handleClick}>Add dog</Link></li>
+        </ul>
+      </nav>
     );
   }
 }

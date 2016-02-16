@@ -30,6 +30,25 @@ body {
 a {
   color: @link-color;
 }
+.menu {
+  ul {
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    li {
+      float: left;
+      a {
+        padding: 10px 20px;
+        display: block;
+        &:hover {
+          background: @link-color;
+          color: #fff;
+          text-decoration: none
+        }
+      }
+    }
+  }
+}
 .footer {
   font-size: 0.8em;
   padding-top: 10px;

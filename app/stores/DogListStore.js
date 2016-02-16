@@ -11,6 +11,15 @@ class DogListStore {
     this.dogs = data;
   }
 
+  onRemoveDogSuccess(dogId) {
+    let dogs = this.dogs.filter((dog) => {
+      return dog._id !== dogId;
+    });
+
+    this.dogs = dogs;
+    toastr.success('Dog removed successfully');
+  }
+
 }
 
 export default alt.createStore(DogListStore);

@@ -3,7 +3,10 @@ import request from 'superagent';
 
 class DogListActions {
   constructor() {
-    this.generateActions('getDogsSuccess');
+    this.generateActions(
+      'getDogsSuccess',
+      'removeDogSuccess'
+    );
   }
 
   getDogs() {
@@ -11,6 +14,14 @@ class DogListActions {
       .get('/api/dog/list')
       .end((err, response) => {
         this.actions.getDogsSuccess(response.body);
+      });
+  }
+
+  removeDog(dogId) {
+    request
+      .delete('/api/dog/' + dogId)
+      .end((err, response) => {
+        this.actions.removeDogSuccess(dogId);
       });
   }
 

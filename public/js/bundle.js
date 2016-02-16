@@ -111,7 +111,7 @@ var DogListActions = function () {
   function DogListActions() {
     _classCallCheck(this, DogListActions);
 
-    this.generateActions('getDogsSuccess');
+    this.generateActions('getDogsSuccess', 'removeDogSuccess');
   }
 
   _createClass(DogListActions, [{
@@ -121,6 +121,15 @@ var DogListActions = function () {
 
       _superagent2.default.get('/api/dog/list').end(function (err, response) {
         _this.actions.getDogsSuccess(response.body);
+      });
+    }
+  }, {
+    key: 'removeDog',
+    value: function removeDog(dogId) {
+      var _this2 = this;
+
+      _superagent2.default.delete('/api/dog/' + dogId).end(function (err, response) {
+        _this2.actions.removeDogSuccess(dogId);
       });
     }
   }]);
@@ -605,17 +614,41 @@ var DogList = function (_React$Component) {
       this.setState(state);
     }
   }, {
+    key: '_handleRemove',
+    value: function _handleRemove(dogId) {
+      _DogListActions2.default.removeDog(dogId);
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
 
       var dogList = this.state.dogs.map(function (dog, index) {
         return _react2.default.createElement(
-          'div',
+          'tr',
           { key: dog._id },
           _react2.default.createElement(
-            _reactRouter.Link,
-            { to: "dog/" + dog._id },
-            dog.name
+            'td',
+            null,
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: "dog/" + dog._id },
+              dog.name
+            )
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            'Edit'
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            _react2.default.createElement(
+              'span',
+              { onClick: _this2._handleRemove.bind(_this2, dog._id) },
+              'Remove'
+            )
           )
         );
       });
@@ -628,7 +661,38 @@ var DogList = function (_React$Component) {
           null,
           'List dog'
         ),
-        dogList
+        _react2.default.createElement(
+          'table',
+          { className: 'table table-striped' },
+          _react2.default.createElement(
+            'thead',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                null,
+                'Dog'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Edit'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'Remove'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'tbody',
+            null,
+            dogList
+          )
+        )
       );
     }
   }]);
@@ -821,17 +885,29 @@ var Navigation = function (_React$Component) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        'div',
-        null,
+        'nav',
+        { className: 'menu' },
         _react2.default.createElement(
-          _reactRouter.Link,
-          { to: '/dogs' },
-          'List'
-        ),
-        _react2.default.createElement(
-          _reactRouter.Link,
-          { to: '/dog/add', onClick: _reactRouter.Link.handleClick },
-          'Add dog'
+          'ul',
+          null,
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/dogs' },
+              'List'
+            )
+          ),
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/dog/add', onClick: _reactRouter.Link.handleClick },
+              'Add dog'
+            )
+          )
         )
       );
     }
@@ -1000,6 +1076,16 @@ var DogListStore = function () {
     key: 'onGetDogsSuccess',
     value: function onGetDogsSuccess(data) {
       this.dogs = data;
+    }
+  }, {
+    key: 'onRemoveDogSuccess',
+    value: function onRemoveDogSuccess(dogId) {
+      var dogs = this.dogs.filter(function (dog) {
+        return dog._id !== dogId;
+      });
+
+      this.dogs = dogs;
+      toastr.success('Dog removed successfully');
     }
   }]);
 

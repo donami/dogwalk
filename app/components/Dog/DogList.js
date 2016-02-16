@@ -23,20 +23,37 @@ class DogList extends React.Component {
     this.setState(state);
   }
 
+  _handleRemove(dogId) {
+    DogListActions.removeDog(dogId);
+  }
+
   render () {
 
     let dogList = this.state.dogs.map((dog, index) => {
       return (
-        <div key={dog._id}>
-          <Link to={"dog/" + dog._id}>{dog.name}</Link>
-        </div>
+        <tr key={dog._id}>
+          <td><Link to={"dog/" + dog._id}>{dog.name}</Link></td>
+          <td>Edit</td>
+          <td><span onClick={this._handleRemove.bind(this, dog._id)}>Remove</span></td>
+        </tr>
       );
     });
 
     return (
       <div>
         <h1>List dog</h1>
-        {dogList}
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Dog</th>
+              <th>Edit</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dogList}
+          </tbody>
+        </table>
       </div>
     );
   }

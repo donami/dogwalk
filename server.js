@@ -75,6 +75,18 @@ app.get('/api/dog/:id', function(req, res) {
   });
 });
 
+// Remove dog route
+app.delete('/api/dog/:id', function(req, res) {
+  Dog.findByIdAndRemove(req.params.id, function(err, data) {
+    if (err) {
+      res.json(error);
+    }
+    else {
+      res.json(data);
+    }
+  });
+});
+
 
 
 app.use(function(req, res) {
