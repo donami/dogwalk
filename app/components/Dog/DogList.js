@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import DogListActions from '../../actions/DogListActions';
 import DogListStore from '../../stores/DogListStore';
-import { Link } from 'react-router';
+import DogListItem from '../Dog/DogListItem';
 
 class DogList extends React.Component {
   constructor(props) {
@@ -27,15 +27,20 @@ class DogList extends React.Component {
     DogListActions.removeDog(dogId);
   }
 
+  _handleSave(dog) {
+    DogListActions.saveDog(dog);
+  }
+
+
   render () {
 
     let dogList = this.state.dogs.map((dog, index) => {
       return (
-        <tr key={dog._id}>
-          <td><Link to={"dog/" + dog._id}>{dog.name}</Link></td>
-          <td>Edit</td>
-          <td><span onClick={this._handleRemove.bind(this, dog._id)}>Remove</span></td>
-        </tr>
+        <DogListItem
+          key={dog._id}
+          data={dog}
+          handleRemove={this._handleRemove.bind(this, dog._id)}
+          handleSave={this._handleSave.bind(this)}/>
       );
     });
 

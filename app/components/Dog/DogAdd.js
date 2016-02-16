@@ -89,7 +89,7 @@ class DogAdd extends React.Component {
           </div>
 
 
-          <button type="submit">Add</button>
+          <button className="btn btn-success" type="submit">Add</button>
       </form>
       </div>
     );

@@ -5,7 +5,8 @@ class DogListActions {
   constructor() {
     this.generateActions(
       'getDogsSuccess',
-      'removeDogSuccess'
+      'removeDogSuccess',
+      'saveDogSuccess'
     );
   }
 
@@ -22,6 +23,15 @@ class DogListActions {
       .delete('/api/dog/' + dogId)
       .end((err, response) => {
         this.actions.removeDogSuccess(dogId);
+      });
+  }
+
+  saveDog(dog) {
+    request
+      .put('/api/dog/' + dog._id)
+      .send({dog: dog})
+      .end((err, response) => {
+        this.actions.saveDogSuccess(dog);
       });
   }
 

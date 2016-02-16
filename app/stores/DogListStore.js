@@ -20,6 +20,19 @@ class DogListStore {
     toastr.success('Dog removed successfully');
   }
 
+  onSaveDogSuccess(data) {
+    toastr.success('Dog saved successfully');
+
+    const dogs = this.dogs.map(dog => {
+      if(dog._id === data._id) {
+        return Object.assign({}, dog, data);
+      }
+
+      return dog;
+    });
+
+    this.dogs = dogs;
+  }
 }
 
 export default alt.createStore(DogListStore);

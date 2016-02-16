@@ -42,7 +42,7 @@ var DogActions = function () {
 
 exports.default = _alt2.default.createActions(DogActions);
 
-},{"../alt":4,"superagent":37}],2:[function(require,module,exports){
+},{"../alt":4,"superagent":38}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -86,7 +86,7 @@ var DogAddActions = function () {
 
 exports.default = _alt2.default.createActions(DogAddActions);
 
-},{"../alt":4,"superagent":37}],3:[function(require,module,exports){
+},{"../alt":4,"superagent":38}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -111,7 +111,7 @@ var DogListActions = function () {
   function DogListActions() {
     _classCallCheck(this, DogListActions);
 
-    this.generateActions('getDogsSuccess', 'removeDogSuccess');
+    this.generateActions('getDogsSuccess', 'removeDogSuccess', 'saveDogSuccess');
   }
 
   _createClass(DogListActions, [{
@@ -132,6 +132,15 @@ var DogListActions = function () {
         _this2.actions.removeDogSuccess(dogId);
       });
     }
+  }, {
+    key: 'saveDog',
+    value: function saveDog(dog) {
+      var _this3 = this;
+
+      _superagent2.default.put('/api/dog/' + dog._id).send({ dog: dog }).end(function (err, response) {
+        _this3.actions.saveDogSuccess(dog);
+      });
+    }
   }]);
 
   return DogListActions;
@@ -139,7 +148,7 @@ var DogListActions = function () {
 
 exports.default = _alt2.default.createActions(DogListActions);
 
-},{"../alt":4,"superagent":37}],4:[function(require,module,exports){
+},{"../alt":4,"superagent":38}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -210,7 +219,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Footer":9,"./Header":10,"react":"react"}],6:[function(require,module,exports){
+},{"./Footer":10,"./Header":11,"react":"react"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -381,7 +390,7 @@ var Dog = function (_React$Component) {
 
 exports.default = Dog;
 
-},{"../../actions/DogActions":1,"../../stores/DogStore":17,"react":"react"}],7:[function(require,module,exports){
+},{"../../actions/DogActions":1,"../../stores/DogStore":18,"react":"react"}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -540,7 +549,7 @@ var DogAdd = function (_React$Component) {
           ),
           _react2.default.createElement(
             'button',
-            { type: 'submit' },
+            { className: 'btn btn-success', type: 'submit' },
             'Add'
           )
         )
@@ -553,7 +562,7 @@ var DogAdd = function (_React$Component) {
 
 exports.default = DogAdd;
 
-},{"../../actions/DogAddActions":2,"../../stores/DogAddStore":15,"react":"react"}],8:[function(require,module,exports){
+},{"../../actions/DogAddActions":2,"../../stores/DogAddStore":16,"react":"react"}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -574,7 +583,9 @@ var _DogListStore = require('../../stores/DogListStore');
 
 var _DogListStore2 = _interopRequireDefault(_DogListStore);
 
-var _reactRouter = require('react-router');
+var _DogListItem = require('../Dog/DogListItem');
+
+var _DogListItem2 = _interopRequireDefault(_DogListItem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -619,38 +630,21 @@ var DogList = function (_React$Component) {
       _DogListActions2.default.removeDog(dogId);
     }
   }, {
+    key: '_handleSave',
+    value: function _handleSave(dog) {
+      _DogListActions2.default.saveDog(dog);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
       var dogList = this.state.dogs.map(function (dog, index) {
-        return _react2.default.createElement(
-          'tr',
-          { key: dog._id },
-          _react2.default.createElement(
-            'td',
-            null,
-            _react2.default.createElement(
-              _reactRouter.Link,
-              { to: "dog/" + dog._id },
-              dog.name
-            )
-          ),
-          _react2.default.createElement(
-            'td',
-            null,
-            'Edit'
-          ),
-          _react2.default.createElement(
-            'td',
-            null,
-            _react2.default.createElement(
-              'span',
-              { onClick: _this2._handleRemove.bind(_this2, dog._id) },
-              'Remove'
-            )
-          )
-        );
+        return _react2.default.createElement(_DogListItem2.default, {
+          key: dog._id,
+          data: dog,
+          handleRemove: _this2._handleRemove.bind(_this2, dog._id),
+          handleSave: _this2._handleSave.bind(_this2) });
       });
 
       return _react2.default.createElement(
@@ -702,7 +696,170 @@ var DogList = function (_React$Component) {
 
 exports.default = DogList;
 
-},{"../../actions/DogListActions":3,"../../stores/DogListStore":16,"react":"react","react-router":"react-router"}],9:[function(require,module,exports){
+},{"../../actions/DogListActions":3,"../../stores/DogListStore":17,"../Dog/DogListItem":9,"react":"react"}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DogListItem = function (_React$Component) {
+  _inherits(DogListItem, _React$Component);
+
+  function DogListItem(props) {
+    _classCallCheck(this, DogListItem);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(DogListItem).call(this, props));
+
+    _this.state = {
+      editing: false
+    };
+    return _this;
+  }
+
+  _createClass(DogListItem, [{
+    key: '_handleToggleEdit',
+    value: function _handleToggleEdit() {
+      this.setState({ editing: !this.state.editing });
+    }
+  }, {
+    key: '_handleSave',
+    value: function _handleSave(e) {
+      e.preventDefault();
+
+      var dog = {
+        _id: this.props.data._id,
+        name: this.refs.name.value,
+        race: this.refs.race.value,
+        description: this.refs.description.value,
+        born: this.refs.born.value
+      };
+
+      this.props.handleSave(dog);
+      this.setState({ editing: false });
+    }
+  }, {
+    key: 'renderEdit',
+    value: function renderEdit() {
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          { colSpan: '3' },
+          _react2.default.createElement(
+            'form',
+            { onSubmit: this._handleSave.bind(this) },
+            _react2.default.createElement(
+              'div',
+              { className: 'form-group' },
+              _react2.default.createElement(
+                'label',
+                { htmlFor: 'fName' },
+                'Name'
+              ),
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'name', id: 'fName', defaultValue: this.props.data.name, placeholder: 'Name' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'form-group' },
+              _react2.default.createElement(
+                'label',
+                { htmlFor: 'fRace' },
+                'Race'
+              ),
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'race', id: 'fRace', defaultValue: this.props.data.race, placeholder: 'Race' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'form-group' },
+              _react2.default.createElement(
+                'label',
+                { htmlFor: 'fBorn' },
+                'Born'
+              ),
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'born', id: 'fBorn', defaultValue: this.props.data.born, placeholder: 'Born' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'form-group' },
+              _react2.default.createElement('label', { htmlFor: 'fDescription' }),
+              _react2.default.createElement('input', { type: 'text', className: 'form-control', ref: 'description', id: 'fDescription', defaultValue: this.props.data.description, placeholder: 'Description' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'form-actions' },
+              _react2.default.createElement(
+                'button',
+                { className: 'btn btn-success', type: 'submit' },
+                'Save'
+              ),
+              _react2.default.createElement(
+                'button',
+                { className: 'btn btn-danger', onClick: this._handleToggleEdit.bind(this) },
+                'Cancel'
+              )
+            )
+          )
+        )
+      );
+    }
+  }, {
+    key: 'renderView',
+    value: function renderView() {
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(
+            _reactRouter.Link,
+            { to: "dog/" + this.props.data._id },
+            this.props.data.name
+          )
+        ),
+        _react2.default.createElement(
+          'td',
+          { onClick: this._handleToggleEdit.bind(this) },
+          'Edit'
+        ),
+        _react2.default.createElement(
+          'td',
+          { onClick: this.props.handleRemove },
+          'Remove'
+        )
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return this.state.editing ? this.renderEdit() : this.renderView();
+    }
+  }]);
+
+  return DogListItem;
+}(_react2.default.Component);
+
+exports.default = DogListItem;
+
+},{"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -748,7 +905,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"react":"react"}],10:[function(require,module,exports){
+},{"react":"react"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -803,7 +960,7 @@ var Header = function (_React$Component) {
 
 exports.default = Header;
 
-},{"./Navigation":12,"react":"react"}],11:[function(require,module,exports){
+},{"./Navigation":13,"react":"react"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -849,7 +1006,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],12:[function(require,module,exports){
+},{"react":"react"}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -918,7 +1075,7 @@ var Navigation = function (_React$Component) {
 
 exports.default = Navigation;
 
-},{"react":"react","react-router":"react-router"}],13:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],14:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -951,7 +1108,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":14,"history/lib/createBrowserHistory":26,"react":"react","react-dom":"react-dom","react-router":"react-router"}],14:[function(require,module,exports){
+},{"./routes":15,"history/lib/createBrowserHistory":27,"react":"react","react-dom":"react-dom","react-router":"react-router"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -995,7 +1152,7 @@ exports.default = _react2.default.createElement(
   _react2.default.createElement(_reactRouter.Route, { path: '/dogs', component: _DogList2.default })
 );
 
-},{"./components/App":5,"./components/Dog/Dog":6,"./components/Dog/DogAdd":7,"./components/Dog/DogList":8,"./components/Home":11,"react":"react","react-router":"react-router"}],15:[function(require,module,exports){
+},{"./components/App":5,"./components/Dog/Dog":6,"./components/Dog/DogAdd":7,"./components/Dog/DogList":8,"./components/Home":12,"react":"react","react-router":"react-router"}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1043,7 +1200,7 @@ var DogAddStore = function () {
 
 exports.default = _alt2.default.createStore(DogAddStore);
 
-},{"../actions/DogAddActions":2,"../alt":4}],16:[function(require,module,exports){
+},{"../actions/DogAddActions":2,"../alt":4}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1087,6 +1244,21 @@ var DogListStore = function () {
       this.dogs = dogs;
       toastr.success('Dog removed successfully');
     }
+  }, {
+    key: 'onSaveDogSuccess',
+    value: function onSaveDogSuccess(data) {
+      toastr.success('Dog saved successfully');
+
+      var dogs = this.dogs.map(function (dog) {
+        if (dog._id === data._id) {
+          return Object.assign({}, dog, data);
+        }
+
+        return dog;
+      });
+
+      this.dogs = dogs;
+    }
   }]);
 
   return DogListStore;
@@ -1094,7 +1266,7 @@ var DogListStore = function () {
 
 exports.default = _alt2.default.createStore(DogListStore);
 
-},{"../actions/DogListActions":3,"../alt":4}],17:[function(require,module,exports){
+},{"../actions/DogListActions":3,"../alt":4}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1135,7 +1307,7 @@ var DogStore = function () {
 
 exports.default = _alt2.default.createStore(DogStore);
 
-},{"../actions/DogActions":1,"../alt":4}],18:[function(require,module,exports){
+},{"../actions/DogActions":1,"../alt":4}],19:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1231,7 +1403,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":19,"./lib/keys.js":20}],19:[function(require,module,exports){
+},{"./lib/is_arguments.js":20,"./lib/keys.js":21}],20:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1253,7 +1425,7 @@ function unsupported(object){
     false;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1264,7 +1436,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1296,7 +1468,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1323,7 +1495,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1394,7 +1566,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":35,"warning":39}],24:[function(require,module,exports){
+},{"_process":36,"warning":40}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1475,13 +1647,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1662,7 +1834,7 @@ function createBrowserHistory() {
 exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":21,"./DOMStateStorage":23,"./DOMUtils":24,"./ExecutionEnvironment":25,"./createDOMHistory":27,"./parsePath":32,"_process":35,"invariant":34}],27:[function(require,module,exports){
+},{"./Actions":22,"./DOMStateStorage":24,"./DOMUtils":25,"./ExecutionEnvironment":26,"./createDOMHistory":28,"./parsePath":33,"_process":36,"invariant":35}],28:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1705,7 +1877,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":24,"./ExecutionEnvironment":25,"./createHistory":28,"_process":35,"invariant":34}],28:[function(require,module,exports){
+},{"./DOMUtils":25,"./ExecutionEnvironment":26,"./createHistory":29,"_process":36,"invariant":35}],29:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1997,7 +2169,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":21,"./AsyncUtils":22,"./createLocation":29,"./deprecate":30,"./parsePath":32,"./runTransitionHook":33,"deep-equal":18}],29:[function(require,module,exports){
+},{"./Actions":22,"./AsyncUtils":23,"./createLocation":30,"./deprecate":31,"./parsePath":33,"./runTransitionHook":34,"deep-equal":19}],30:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2052,7 +2224,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":21,"./parsePath":32}],30:[function(require,module,exports){
+},{"./Actions":22,"./parsePath":33}],31:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -2068,7 +2240,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2082,7 +2254,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2129,7 +2301,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":31,"_process":35,"warning":39}],33:[function(require,module,exports){
+},{"./extractPath":32,"_process":36,"warning":40}],34:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2156,7 +2328,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":35,"warning":39}],34:[function(require,module,exports){
+},{"_process":36,"warning":40}],35:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -2211,7 +2383,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":35}],35:[function(require,module,exports){
+},{"_process":36}],36:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2304,7 +2476,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -2329,7 +2501,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -3522,7 +3694,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":38,"reduce":36}],38:[function(require,module,exports){
+},{"emitter":39,"reduce":37}],39:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -3685,7 +3857,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -3749,4 +3921,4 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":35}]},{},[13]);
+},{"_process":36}]},{},[14]);

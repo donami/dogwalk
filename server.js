@@ -59,7 +59,7 @@ app.post('/api/dog/add', function(req, res) {
 
   dog.save(function(err, data) {
     if (err) {
-      res.json(error);
+      res.json(err);
     }
     else {
       res.json(data);
@@ -72,6 +72,25 @@ app.get('/api/dog/:id', function(req, res) {
   Dog.findOne({ _id: req.params.id }, function(err, dog) {
     /* Todo: Handle errors, not found */
     res.send(dog);
+  });
+});
+
+// Save dog route
+app.put('/api/dog/:id', function(req, res) {
+  Dog.findByIdAndUpdate(req.params.id, {
+    $set: {
+      name: req.body.dog.name,
+      race: req.body.dog.race,
+      born: req.body.dog.born,
+      description: req.body.dog.description,
+    }
+  }, function(err, data) {
+    if (err) {
+      res.json(err);
+    }
+    else {
+      res.json(data);
+    }
   });
 });
 
