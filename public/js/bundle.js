@@ -188,7 +188,7 @@ var App = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'container' },
         _react2.default.createElement(_Header2.default, null),
         this.props.children,
         _react2.default.createElement(_Footer2.default, null)
@@ -264,11 +264,104 @@ var Dog = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'row', id: 'dogContainer' },
         _react2.default.createElement(
-          'h1',
-          null,
-          this.state.dog.name
+          'div',
+          { className: 'col-md-4' },
+          _react2.default.createElement('img', { src: 'https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s306x306/e15/11017557_640180799445071_263045380_n.jpg', alt: 'Image' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'col-md-8' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Hi, I\'m ',
+            this.state.dog.name
+          ),
+          _react2.default.createElement(
+            'table',
+            { className: 'table table-striped' },
+            _react2.default.createElement(
+              'tbody',
+              null,
+              _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  'Name:'
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  this.state.dog.name
+                )
+              ),
+              _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  'Born:'
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  this.state.dog.born
+                )
+              ),
+              _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  'Race'
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  this.state.dog.race
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'description' },
+            _react2.default.createElement(
+              'h2',
+              null,
+              'Get to know me!'
+            ),
+            _react2.default.createElement(
+              'p',
+              null,
+              this.state.dog.description
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'requestArea' },
+            _react2.default.createElement(
+              'h3',
+              null,
+              'Interested?'
+            ),
+            _react2.default.createElement(
+              'button',
+              { type: 'button', className: 'btn btn-success' },
+              'Request walk'
+            ),
+            _react2.default.createElement(
+              'p',
+              null,
+              'Click the button to inform the owners of your interest.'
+            )
+          )
         )
       );
     }
@@ -341,16 +434,34 @@ var DogAdd = function (_React$Component) {
     value: function _addDog(e) {
       e.preventDefault();
 
-      _DogAddActions2.default.addDog(this.state.dog);
+      var dog = {
+        name: this.state.name,
+        race: this.state.race,
+        description: this.state.description,
+        born: this.state.born
+      };
+
+      _DogAddActions2.default.addDog(dog);
     }
   }, {
-    key: '_handleChange',
-    value: function _handleChange(event) {
-      this.setState({
-        dog: {
-          name: event.target.value
-        }
-      });
+    key: '_handleNameChange',
+    value: function _handleNameChange(event) {
+      this.setState({ name: event.target.value });
+    }
+  }, {
+    key: '_handleBornChange',
+    value: function _handleBornChange(event) {
+      this.setState({ born: event.target.value });
+    }
+  }, {
+    key: '_handleRaceChange',
+    value: function _handleRaceChange(event) {
+      this.setState({ race: event.target.value });
+    }
+  }, {
+    key: '_handleDescripionChange',
+    value: function _handleDescripionChange(event) {
+      this.setState({ description: event.target.value });
     }
   }, {
     key: 'render',
@@ -363,13 +474,61 @@ var DogAdd = function (_React$Component) {
           null,
           'Add Dog'
         ),
-        this.state.dog.name,
         _react2.default.createElement(
           'form',
           { onSubmit: this._addDog.bind(this) },
-          _react2.default.createElement('input', { type: 'text',
-            onChange: this._handleChange.bind(this),
-            value: this.state.dog.name }),
+          _react2.default.createElement(
+            'div',
+            { className: 'form-group' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'fName' },
+              'Name'
+            ),
+            _react2.default.createElement('input', { type: 'text',
+              className: 'form-control',
+              onChange: this._handleNameChange.bind(this),
+              value: this.state.name })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'form-group' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'fDate' },
+              'Date of birth'
+            ),
+            _react2.default.createElement('input', { type: 'text',
+              className: 'form-control',
+              onChange: this._handleBornChange.bind(this),
+              value: this.state.born })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'form-group' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'fRace' },
+              'Race'
+            ),
+            _react2.default.createElement('input', { type: 'text',
+              className: 'form-control',
+              onChange: this._handleRaceChange.bind(this),
+              value: this.state.race })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'form-group' },
+            _react2.default.createElement(
+              'label',
+              { htmlFor: 'fDescription' },
+              'Description'
+            ),
+            _react2.default.createElement('input', { type: 'text',
+              className: 'form-control',
+              onChange: this._handleDescripionChange.bind(this),
+              value: this.state.description })
+          ),
           _react2.default.createElement(
             'button',
             { type: 'submit' },
@@ -480,7 +639,7 @@ var DogList = function (_React$Component) {
 exports.default = DogList;
 
 },{"../../actions/DogListActions":3,"../../stores/DogListStore":16,"react":"react","react-router":"react-router"}],9:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -488,7 +647,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -510,12 +669,12 @@ var Footer = function (_React$Component) {
   }
 
   _createClass(Footer, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       return _react2.default.createElement(
-        'div',
-        null,
-        'Footer'
+        "div",
+        { className: "footer" },
+        "Copyright © Dogwalk. All rights reserved"
       );
     }
   }]);
@@ -565,6 +724,11 @@ var Header = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Dogzee'
+        ),
         _react2.default.createElement(_Navigation2.default, null)
       );
     }
@@ -781,13 +945,19 @@ var DogAddStore = function () {
     _classCallCheck(this, DogAddStore);
 
     this.bindActions(_DogAddActions2.default);
-    this.dog = [];
+    this.name = '';
+    this.race = '';
+    this.description = '';
+    this.born = '';
   }
 
   _createClass(DogAddStore, [{
     key: 'onAddDogSuccess',
     value: function onAddDogSuccess(data) {
-      this.dog = [];
+      this.name = '';
+      this.race = '';
+      this.description = '';
+      this.born = '';
       toastr.success("Dog added successfully");
     }
   }]);

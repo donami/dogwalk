@@ -5,6 +5,7 @@ class Header extends React.Component {
   render () {
     return (
       <div>
+        <h1>Dogzee</h1>
         <Navigation />
       </div>
     );

@@ -46,10 +46,13 @@ app.get('/api/dog/list', function(req, res) {
   });
 });
 
-// Add dog 
+// Add dog
 app.post('/api/dog/add', function(req, res) {
   var data = {
-    name: req.body.dog.name
+    name: req.body.dog.name,
+    born: req.body.dog.born,
+    description: req.body.dog.description,
+    race: req.body.dog.race
   };
 
   var dog = new Dog(data);

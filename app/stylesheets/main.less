@@ -1,3 +1,61 @@
 @import '../../bower_components/bootstrap/less/bootstrap';
 @import '../../bower_components/toastr/toastr';
 @import (less) '../../bower_components/magnific-popup/dist/magnific-popup.css';
+
+/** Variables **/
+@border-default-color: #ccc;
+@border-colored-color: #cd6a51;
+
+@link-color: #cd6a51;
+
+@margin-top: 20px;
+
+/** Mixins **/
+.border-radius(@radius: 10px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
+}
+.default-border(@padding: 10px) {
+  border: 1px solid @border-default-color;
+  padding: @padding;
+  .border-radius;
+  margin-top: @margin-top;
+}
+
+/** Page **/
+body {
+
+}
+a {
+  color: @link-color;
+}
+.footer {
+  font-size: 0.8em;
+  padding-top: 10px;
+  margin-top: @margin-top;
+  border-top: @border-default-color 1px solid;
+}
+
+/** Dog page **/
+#dogContainer {
+  .description {
+    .default-border;
+
+    h2 {
+      margin: 0;
+      padding-bottom: 10px;
+      border-bottom: @border-colored-color 1px solid;
+    }
+  }
+
+  .requestArea {
+    .default-border;
+    text-align: center;
+  }
+
+  p {
+    margin-top: @margin-top;
+  }
+
+}
