@@ -922,6 +922,8 @@ var _Navigation = require('./Navigation');
 
 var _Navigation2 = _interopRequireDefault(_Navigation);
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -948,7 +950,11 @@ var Header = function (_React$Component) {
         _react2.default.createElement(
           'h1',
           null,
-          'Dogzee'
+          _react2.default.createElement(
+            _reactRouter.Link,
+            { to: '/' },
+            'Dogzee'
+          )
         ),
         _react2.default.createElement(_Navigation2.default, null)
       );
@@ -960,7 +966,7 @@ var Header = function (_React$Component) {
 
 exports.default = Header;
 
-},{"./Navigation":13,"react":"react"}],12:[function(require,module,exports){
+},{"./Navigation":13,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1047,6 +1053,15 @@ var Navigation = function (_React$Component) {
         _react2.default.createElement(
           'ul',
           null,
+          _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              _reactRouter.Link,
+              { to: '/' },
+              'Home'
+            )
+          ),
           _react2.default.createElement(
             'li',
             null,

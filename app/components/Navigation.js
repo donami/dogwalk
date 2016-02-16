@@ -6,6 +6,7 @@ class Navigation extends React.Component {
     return (
       <nav className="menu">
         <ul>
+          <li><Link to="/">Home</Link></li>
           <li><Link to="/dogs">List</Link></li>
           <li><Link to="/dog/add" onClick={Link.handleClick}>Add dog</Link></li>
         </ul>
