@@ -50,9 +50,9 @@ class DogList extends React.Component {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Dog</th>
-              <th>Edit</th>
-              <th>Remove</th>
+              <th className="col-md-8 col-xs-8">Dog</th>
+              <th className="col-md-2 col-xs-2">Edit</th>
+              <th className="col-md-2 col-xs-2">Remove</th>
             </tr>
           </thead>
           <tbody>

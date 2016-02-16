@@ -67,8 +67,12 @@ class DogListItem extends React.Component {
     return (
       <tr>
         <td><Link to={"dog/" + this.props.data._id}>{this.props.data.name}</Link></td>
-        <td onClick={this._handleToggleEdit.bind(this)}>Edit</td>
-        <td onClick={this.props.handleRemove}>Remove</td>
+        <td>
+          <button className="btn btn-xs btn-success" type="button" onClick={this._handleToggleEdit.bind(this)}>Edit</button>
+        </td>
+        <td>
+          <button className="btn btn-xs btn-danger" onClick={this.props.handleRemove}>Remove</button>
+        </td>
       </tr>
     );
   }

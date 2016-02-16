@@ -666,17 +666,17 @@ var DogList = function (_React$Component) {
               null,
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-8 col-xs-8' },
                 'Dog'
               ),
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-2 col-xs-2' },
                 'Edit'
               ),
               _react2.default.createElement(
                 'th',
-                null,
+                { className: 'col-md-2 col-xs-2' },
                 'Remove'
               )
             )
@@ -837,13 +837,21 @@ var DogListItem = function (_React$Component) {
         ),
         _react2.default.createElement(
           'td',
-          { onClick: this._handleToggleEdit.bind(this) },
-          'Edit'
+          null,
+          _react2.default.createElement(
+            'button',
+            { className: 'btn btn-xs btn-success', type: 'button', onClick: this._handleToggleEdit.bind(this) },
+            'Edit'
+          )
         ),
         _react2.default.createElement(
           'td',
-          { onClick: this.props.handleRemove },
-          'Remove'
+          null,
+          _react2.default.createElement(
+            'button',
+            { className: 'btn btn-xs btn-danger', onClick: this.props.handleRemove },
+            'Remove'
+          )
         )
       );
     }
